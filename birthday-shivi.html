@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>N Series · Birthday Special</title>
+    <style>
+      /* ----- RESET & GLOBAL ----- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #0b0b0b;
+        font-family:
+          "Segoe UI",
+          Roboto,
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #fff;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        background: #1a1a1a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e50914;
+        border-radius: 10px;
+      }
+
+      /* ----- LOGIN / PROFILE (unchanged, clean) ----- */
+      .login-container {
+        min-height: 100vh;
+        background: radial-gradient(circle at 30% 30%, #1a0a0a, #000 90%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .login-box {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 48px 36px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid rgba(229, 9, 20, 0.25);
+        box-shadow: 0 20px 60px rgba(229, 9, 20, 0.2);
+        backdrop-filter: blur(8px);
+        text-align: center;
+      }
+      .netflix-logo {
+        font-size: 44px;
+        font-weight: 700;
+        color: #e50914;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        text-shadow: 0 0 30px rgba(229, 9, 20, 0.3);
+      }
+      .login-box h1 {
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 28px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+        text-align: left;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        color: #aaa;
+        margin-bottom: 6px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: 0.3s;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #e50914;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+      }
+      .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: #e50914;
+        border: none;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 8px;
+      }
+      .login-btn:hover {
+        background: #c40812;
+        transform: scale(1.02);
+        box-shadow: 0 8px 30px rgba(229, 9, 20, 0.4);
+      }
+      .login-footer {
+        margin-top: 24px;
+        font-size: 13px;
+        color: #777;
+      }
+
+      .profile-container {
+        display: none;
+        min-height: 100vh;
+        background: #0b0b0b;
+        padding: 50px 20px;
+        text-align: center;
+      }
+      .profile-container.active {
+        display: block;
+      }
+      .profile-container .netflix-logo {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+      .profile-container h1 {
+        font-size: 34px;
+        font-weight: 400;
+        margin-bottom: 40px;
+      }
+      .profiles {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .profile {
+        cursor: pointer;
+        transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .profile:hover {
+        transform: scale(1.08);
+      }
+      .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #e50914, #a0060e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 68px;
+        margin: 0 auto 14px;
+        box-shadow: 0 8px 30px rgba(229, 9, 20, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.06);
+        transition: 0.3s;
+        overflow: hidden;
+      }
+      .profile-pic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .profile:hover .profile-pic {
+        box-shadow: 0 12px 45px rgba(229, 9, 20, 0.5);
+        border-color: #e50914;
+      }
+      .profile h2 {
+        font-size: 20px;
+        font-weight: 400;
+      }
+
+      /* ----- MAIN CONTENT ----- */
+      .main-content {
+        display: none;
+        padding-bottom: 60px;
+      }
+      .main-content.active {
+        display: block;
+      }
+
+      /* navbar */
+      .navbar {
+        background: rgba(0, 0, 0, 0.92);
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(229, 9, 20, 0.1);
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .navbar .netflix-logo {
+        font-size: 28px;
+        margin: 0;
+      }
+      .nav-links {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-links button {
+        background: none;
+        border: none;
+        color: #ccc;
+        font-size: 14px;
+        padding: 6px 14px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 500;
+      }
+      .nav-links button:hover {
+        background: rgba(229, 9, 20, 0.2);
+        color: #e50914;
+      }
+      .nav-links button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.18);
+      }
+
+      h1,
+      h2 {
+        line-height: 1.15;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ----- FULLSCREEN BANNER (video 2 autoplay) ----- */
+      .banner-fullscreen {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .banner-fullscreen video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .banner-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 60px 30px 40px;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8) 80%);
+        pointer-events: none;
+        z-index: 10;
+        text-align: center;
+      }
+      .banner-overlay .n-badge {
+        display: inline-block;
+        background: #e50914;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 4px 18px;
+        border-radius: 30px;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4);
+      }
+      .banner-overlay h1 {
+        font-size: clamp(2.4rem, 10vw, 5rem);
+        font-weight: 700;
+        text-shadow: 0 4px 40px rgba(0, 0, 0, 0.7);
+        margin-bottom: 10px;
+        animation: titleGlow 3s ease-in-out infinite alternate;
+      }
+      @keyframes titleGlow {
+        0% {
+          text-shadow:
+            0 0 20px rgba(229, 9, 20, 0.3),
+            0 4px 30px rgba(0, 0, 0, 0.6);
+        }
+        100% {
+          text-shadow:
+            0 0 50px rgba(229, 9, 20, 0.6),
+            0 4px 40px rgba(0, 0, 0, 0.8);
+        }
+      }
+      .banner-overlay .sub-text {
+        font-size: clamp(1rem, 3vw, 1.6rem);
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto 16px;
+      }
+      .banner-overlay .tagline {
+        font-size: clamp(0.9rem, 2vw, 1.3rem);
+        color: #ffb3b3;
+        font-style: italic;
+        font-weight: 300;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 14px;
+        display: inline-block;
+      }
+
+      /* PLAY BUTTON */
+      .play-btn-wrapper {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 20;
+        pointer-events: none;
+      }
+      .play-btn-wrapper button {
+        pointer-events: auto;
+        background: rgba(229, 9, 20, 0.85);
+        border: none;
+        border-radius: 60px;
+        padding: 14px 36px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        box-shadow: 0 0 40px rgba(229, 9, 20, 0.5);
+        transition: 0.25s ease;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        letter-spacing: 1px;
+      }
+      .play-btn-wrapper button:hover {
+        transform: scale(1.06);
+        background: #e50914;
+        box-shadow: 0 0 60px rgba(229, 9, 20, 0.7);
+      }
+      .play-btn-wrapper button span {
+        font-size: 1.6rem;
+        line-height: 1;
+      }
+      .play-btn-wrapper .play-label {
+        font-weight: 700;
+        text-transform: none;
+        letter-spacing: 0.6px;
+      }
+
+      /* ----- INFINITE PHOTO BELT (marquee style) ----- */
+      .photo-belt-section {
+        padding: 30px 0 10px;
+        overflow: hidden;
+        background: #0b0b0b;
+        position: relative;
+      }
+      .photo-belt-section .section-title {
+        padding: 0 30px 16px 30px;
+        font-size: 28px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid rgba(229, 9, 20, 0.2);
+        margin-bottom: 12px;
+      }
+      .photo-belt-section .section-title .badge {
+        background: #e50914;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 2px 12px;
+        border-radius: 30px;
+        letter-spacing: 1px;
+      }
+      .belt-track {
+        display: flex;
+        width: max-content;
+        animation: scrollBelt 28s linear infinite;
+        gap: 18px;
+        padding: 0 18px;
+      }
+      .belt-track:hover {
+        animation-play-state: paused;
+      }
+      .belt-item {
+        flex: 0 0 220px;
+        height: 220px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #1a1a1a;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        transition: 0.3s ease;
+        position: relative;
+      }
+      .belt-item:hover {
+        transform: scale(1.04);
+        border-color: #e50914;
+        box-shadow: 0 12px 40px rgba(229, 9, 20, 0.2);
+        z-index: 5;
+      }
+      .belt-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .belt-item .belt-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: #444;
+        background: #141414;
+      }
+      @keyframes scrollBelt {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* duplicate belt for seamless loop */
+      .belt-wrapper {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+      }
+
+      /* ----- VIDEO GRID (improved) ----- */
+      .video-grid-section {
+        padding: 20px 30px 10px;
+      }
+      .video-grid-section .section-title {
+        font-size: 28px;
+        font-weight: 600;
+        padding: 0 0 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 2px solid rgba(229, 9, 20, 0.2);
+        margin-bottom: 20px;
+      }
+      .video-grid-section .section-title .badge {
+        background: #e50914;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 2px 12px;
+        border-radius: 30px;
+        letter-spacing: 1px;
+      }
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+      .video-card {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+      }
+      .video-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        border-color: rgba(229, 9, 20, 0.4);
+        box-shadow: 0 16px 50px rgba(229, 9, 20, 0.15);
+      }
+      .video-card .video-wrap {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        background: #000;
+      }
+      .video-card .video-wrap video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .video-card .video-label {
+        padding: 14px 18px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        font-size: 16px;
+        font-weight: 500;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+      }
+      .video-card .video-label .play-hint {
+        display: inline-block;
+        margin-left: 8px;
+        font-size: 13px;
+        color: #ffb3b3;
+        font-weight: 600;
+      }
+      .video-card .video-label .sub {
+        font-weight: 300;
+        font-size: 12px;
+        color: #999;
+        display: block;
+        margin-top: 2px;
+      }
+
+      /* ----- QUOTE & MESSAGE (enhanced) ----- */
+      .quote-section {
+        margin: 40px 30px 30px;
+        padding: 34px 28px;
+        background: linear-gradient(
+          135deg,
+          rgba(229, 9, 20, 0.08),
+          rgba(0, 0, 0, 0.6)
+        );
+        border-radius: 24px;
+        border-left: 6px solid #e50914;
+        box-shadow: 0 8px 40px rgba(229, 9, 20, 0.08);
+        text-align: center;
+      }
+      .quote-section .big-emoji {
+        font-size: 44px;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .quote-section h2 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #e50914;
+        letter-spacing: 1px;
+      }
+      .quote-section p {
+        font-size: 20px;
+        color: #ccc;
+        margin-top: 8px;
+        font-weight: 300;
+      }
+
+      .message-section {
+        background: linear-gradient(
+          135deg,
+          rgba(229, 9, 20, 0.06),
+          rgba(0, 0, 0, 0.5)
+        );
+        padding: 48px 36px;
+        margin: 40px 30px 20px;
+        border-radius: 28px;
+        border-left: 6px solid #e50914;
+        backdrop-filter: blur(4px);
+        position: relative;
+        overflow: hidden;
+      }
+      .message-section::before {
+        content: "❤️";
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        font-size: 120px;
+        opacity: 0.04;
+      }
+      .message-section h2 {
+        font-size: 34px;
+        color: #e50914;
+        margin-bottom: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+      .love-letter {
+        max-width: 760px;
+        margin: 0 auto;
+        text-align: left;
+      }
+      .love-letter .greeting {
+        font-size: 22px;
+        color: #e50914;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+      .love-letter .main-line {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 16px 0;
+        line-height: 1.4;
+      }
+      .love-letter .highlight {
+        background: linear-gradient(135deg, #e50914, #ff6b6b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .love-letter .big-declare {
+        font-size: 34px;
+        color: #ff6b6b;
+        font-weight: 700;
+        margin: 20px 0 28px;
+        animation: heartbeat 1.8s ease-in-out infinite;
+        display: inline-block;
+      }
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.06);
+        }
+      }
+      .love-letter .body-text {
+        font-size: 18px;
+        color: #d0d0d0;
+        margin-bottom: 18px;
+        line-height: 1.9;
+      }
+      .love-letter .closing {
+        font-size: 22px;
+        color: #ff6b6b;
+        margin: 28px 0 16px;
+        font-style: italic;
+        font-weight: 500;
+      }
+      .love-letter .signature {
+        font-size: 18px;
+        color: #ccc;
+        margin-top: 24px;
+        line-height: 1.8;
+      }
+      .love-letter .signature .name {
+        font-size: 26px;
+        color: #e50914;
+        font-weight: 700;
+        display: block;
+        margin-top: 4px;
+      }
+      .sender-info {
+        margin-top: 28px;
+        font-size: 15px;
+        color: #e50914;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-align: center;
+      }
+
+      /* ----- FULLSCREEN VIDEO 1 OVERLAY ----- */
+      #video1Fullscreen {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+      }
+      #video1Fullscreen video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #000;
+      }
+      #video1Fullscreen .close-fs {
+        position: absolute;
+        top: 24px;
+        right: 30px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 28px;
+        padding: 8px 18px;
+        border-radius: 40px;
+        cursor: pointer;
+        backdrop-filter: blur(6px);
+        transition: 0.2s;
+        z-index: 999999;
+      }
+      #video1Fullscreen .close-fs:hover {
+        background: #e50914;
+        border-color: #e50914;
+      }
+
+      /* ----- RESPONSIVE ----- */
+      @media (max-width: 768px) {
+        .login-box {
+          padding: 32px 20px;
+        }
+        .navbar {
+          padding: 10px 16px;
+        }
+        .navbar .netflix-logo {
+          font-size: 22px;
+        }
+        .nav-links button {
+          font-size: 12px;
+          padding: 4px 10px;
+        }
+        .profile-pic {
+          width: 120px;
+          height: 120px;
+          font-size: 50px;
+        }
+        .banner-overlay {
+          padding: 30px 16px 24px;
+        }
+        .play-btn-wrapper button {
+          padding: 14px 28px;
+          font-size: 1.2rem;
+          gap: 10px;
+        }
+        .play-btn-wrapper button span {
+          font-size: 1.6rem;
+        }
+        .belt-item {
+          flex: 0 0 160px;
+          height: 160px;
+        }
+        .video-grid {
+          grid-template-columns: 1fr;
+        }
+        .message-section {
+          margin: 30px 14px 20px;
+          padding: 30px 16px;
+        }
+        .quote-section {
+          margin: 30px 14px;
+          padding: 24px 16px;
+        }
+        .photo-belt-section .section-title {
+          font-size: 22px;
+          padding: 0 16px 12px;
+        }
+        .video-grid-section {
+          padding: 10px 16px;
+        }
+      }
+      @media (max-width: 480px) {
+        .belt-item {
+          flex: 0 0 130px;
+          height: 130px;
+        }
+      }
+
+      /* ----- CONFETTI / SPARKLE (unchanged) ----- */
+      .sparkle {
+        position: fixed;
+        pointer-events: none;
+        font-size: 20px;
+        animation: sparkleFade 1s ease-out forwards;
+        z-index: 9999;
+      }
+      @keyframes sparkleFade {
+        0% {
+          opacity: 1;
+          transform: scale(0.5) rotate(0deg);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.3) rotate(180deg) translateY(-30px);
+        }
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(105vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      .float-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LOGIN -->
+    <div class="login-container" id="loginScreen">
+      <div class="login-box">
+        <div class="netflix-logo">NETFLIX</div>
+        <h1>Hi! Shivi, sign in fast</h1>
+        <div class="form-group">
+          <label>Email or mobile</label>
+          <input
+            type="email"
+            id="emailInput"
+            placeholder="Shivi@gmail.com"
+            value="Shivi@gmail.com"
+          />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            id="passwordInput"
+            placeholder="Your secret"
+            value="shivi123"
+          />
+        </div>
+        <button class="login-btn" onclick="goToProfile()">Sign In</button>
+        <div class="login-footer">💕 A special birthday gift from Tanmay</div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="profile-container" id="profileScreen">
+      <div class="netflix-logo">NETFLIX</div>
+      <h1>Who's watching?</h1>
+      <div class="profiles">
+        <div class="profile" onclick="goToMain()">
+          <div class="profile-pic">
+            <img src="photo5.jpeg" alt="A descriptive label of the photo" />
+          </div>
+          <h2>Shivi</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content" id="mainContent">
+      <!-- navbar -->
+      <div class="navbar">
+        <div class="netflix-logo">NETFLIX</div>
+        <div class="nav-links">
+          <button onclick="scrollToSection('hero')">Home</button>
+          <button onclick="scrollToSection('belt')">Photos</button>
+          <button onclick="scrollToSection('videos')">Videos</button>
+          <button onclick="scrollToSection('message')">Message</button>
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <!-- FULLSCREEN BANNER -->
+      <div class="banner-fullscreen" id="hero">
+        <video id="bannerVideo" autoplay loop muted playsinline>
+          <source src="video2.mp4" type="video/mp4" />
+        </video>
+        <div class="play-btn-wrapper">
+          <button id="playBtnVideo1" aria-label="Play birthday video">
+            <span>▶</span> <span class="play-label">Play Birthday Video</span>
+          </button>
+        </div>
+        <div class="banner-overlay">
+          <span class="n-badge">N SERIES</span>
+          <h1>✨ Happy Birthday Baby ✨</h1>
+          <p class="sub-text">
+            Happiest 21st Birthday to the most loveliest person in the world! I
+            love you to the moon and back and goes till 7 rounds for you!
+          </p>
+          <div class="tagline">🧿 Tere mere beeech me kya hai??</div>
+        </div>
+      </div>
+
+      <!-- INFINITE PHOTO BELT -->
+      <div class="photo-belt-section" id="belt">
+        <div class="section-title">
+          📸 Our Memories <span class="badge">∞</span>
+        </div>
+        <div class="belt-wrapper" id="beltWrapper">
+          <div class="belt-track" id="beltTrack"></div>
+        </div>
+      </div>
+
+      <!-- VIDEO GRID -->
+      <div class="video-grid-section" id="videos">
+        <div class="section-title">
+          🎬 Special Videos <span class="badge">N</span>
+        </div>
+        <div class="video-grid" id="videoGrid"></div>
+      </div>
+
+      <!-- QUOTE -->
+      <div class="quote-section">
+        <span class="big-emoji">🤔</span>
+        <h2>Batien???</h2>
+        <p>What are we SHIVI???</p>
+      </div>
+
+      <!-- MESSAGE -->
+      <div class="message-section" id="message">
+        <h2>A Message From Tanmay 💌</h2>
+        <div class="love-letter">
+          <p class="greeting">My Dearest Shivi,</p>
+          <p class="main-line">
+            <span class="highlight"
+              >Happiest 21st birthday to the person who holds my whole
+              heart</span
+            >
+            🧿❤️
+          </p>
+          <p class="big-declare">I love you 3000 🫂💋</p>
+          <p class="body-text">
+            Today is a celebration of you – the most beautiful, incredible, and
+            irreplaceable person in my life. Every moment with you feels like a
+            blessing I never knew I needed. You fill my life with endless joy,
+            warmth, and unconditional love.
+          </p>
+          <p class="body-text">
+            These memories captured in photos and videos are just glimpses of
+            the countless moments that make my heart skip a beat. With every
+            passing day, I fall more deeply in love with your kindness, your
+            laugh, your dreams, and everything that makes you uniquely YOU.
+          </p>
+          <p class="body-text">
+            As you step into this beautiful new chapter of your life, know that
+            I'm right here beside you – cheering you on, supporting your dreams,
+            and loving you more than words could ever express. You deserve all
+            the happiness, success, and magic this world has to offer. 🌟
+          </p>
+          <p class="closing">
+            Here's to you, today and always. Happy 21st, my love! 🎂✨💕
+          </p>
+          <p class="signature">
+            Forever yours,<br /><span class="name">Tanmay</span> ❤️
+          </p>
+        </div>
+        <div class="sender-info">
+          📅 On Your Special Day | 💝 With All My Love
+        </div>
+      </div>
+    </div>
+
+    <!-- FULLSCREEN VIDEO 1 OVERLAY -->
+    <div id="video1Fullscreen">
+      <video id="fsVideo1" controls preload="none" playsinline>
+        <source src="video1.mp4" type="video/mp4" />
+      </video>
+      <button class="close-fs" id="closeFsBtn">✕</button>
+    </div>
+
+    <!-- hidden photo input (kept for upload if needed) -->
+    <input
+      type="file"
+      id="photoInput"
+      accept="image/*"
+      style="display: none"
+      onchange="handlePhotoUpload(event)"
+    />
+
+    <script>
+      // ---------- STATE ----------
+      const PHOTO_COUNT = 8;
+
+      // ---------- AUTH ----------
+      function goToProfile() {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("profileScreen").classList.add("active");
+      }
+      function goToMain() {
+        document.getElementById("profileScreen").classList.remove("active");
+        document.getElementById("mainContent").classList.add("active");
+        buildBelt();
+        buildVideoGrid();
+        ensureBannerVideo();
+        setProfilePicFromPhotos(5);
+      }
+      function logout() {
+        document.getElementById("mainContent").classList.remove("active");
+        document.getElementById("profileScreen").classList.remove("active");
+        document.getElementById("loginScreen").style.display = "flex";
+      }
+      function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+      }
+
+      // ---------- BANNER VIDEO ----------
+      function ensureBannerVideo() {
+        const banner = document.getElementById("bannerVideo");
+        if (!banner) return;
+        banner.load();
+        banner.play().catch(() => {});
+        // fallback: if video2 missing, try video1
+        const sources = ["video2.mp4", "video1.mp4"];
+        (function trySrc(i) {
+          if (i >= sources.length) return;
+          const test = document.createElement("video");
+          test.preload = "metadata";
+          test.onloadedmetadata = function () {
+            banner.querySelector("source").src = sources[i];
+            banner.load();
+            banner.play().catch(() => {});
+          };
+          test.onerror = function () {
+            trySrc(i + 1);
+          };
+          test.src = sources[i];
+        })(0);
+      }
+
+      // ---------- SET PROFILE PIC FROM PHOTOS ----------
+      function setProfilePicFromPhotos(preferredIndex) {
+        const PROFILE_COUNT = PHOTO_COUNT || 8;
+        const exts = ["jpg", "jpeg", "png", "webp"];
+        const profileEl = document.querySelector(".profile-pic");
+        if (!profileEl) return;
+
+        let found = false;
+
+        function tryIndex(idx, cb) {
+          let attempts = 0;
+          function tryExt() {
+            if (attempts >= exts.length) return cb(false);
+            const url = `photo${idx}.${exts[attempts]}`;
+            const img = new Image();
+            img.onload = function () {
+              if (found) return cb(true);
+              found = true;
+              profileEl.innerHTML = "";
+              img.alt = "Profile photo";
+              profileEl.appendChild(img);
+              return cb(true);
+            };
+            img.onerror = function () {
+              attempts++;
+              tryExt();
+            };
+            img.src = url;
+          }
+          tryExt();
+        }
+
+        // First try preferredIndex if provided
+        if (typeof preferredIndex === "number") {
+          tryIndex(preferredIndex, function (ok) {
+            if (ok) return;
+            // fallback to scanning others
+            for (let i = 1; i <= PROFILE_COUNT && !found; i++) {
+              if (i === preferredIndex) continue;
+              tryIndex(i, function () {});
+            }
+          });
+        } else {
+          for (let i = 1; i <= PROFILE_COUNT && !found; i++) {
+            tryIndex(i, function () {});
+          }
+        }
+      }
+
+      // ---------- PLAY BUTTON: video1 fullscreen ----------
+      document.addEventListener("DOMContentLoaded", function () {
+        const playBtn = document.getElementById("playBtnVideo1");
+        const fsContainer = document.getElementById("video1Fullscreen");
+        const fsVideo = document.getElementById("fsVideo1");
+        const closeFs = document.getElementById("closeFsBtn");
+        const banner = document.getElementById("bannerVideo");
+
+        function pauseAllHomeAudio() {
+          // pause and mute banner and any grid videos
+          if (banner) {
+            try {
+              banner.muted = true;
+            } catch (e) {}
+            try {
+              banner.pause();
+            } catch (e) {}
+          }
+          document.querySelectorAll(".video-grid video").forEach((v) => {
+            try {
+              v.pause();
+              v.muted = true;
+            } catch (e) {}
+          });
+        }
+
+        playBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          // prepare fullscreen video: unmute it and pause other media
+          pauseAllHomeAudio();
+          fsVideo.muted = false;
+          fsVideo.load();
+          fsContainer.style.display = "flex";
+          fsVideo.play().catch(() => {});
+        });
+
+        function closeFsPlayer() {
+          fsContainer.style.display = "none";
+          try {
+            fsVideo.pause();
+            fsVideo.currentTime = 0;
+          } catch (e) {}
+          // ensure no audio is left playing on the main page
+          pauseAllHomeAudio();
+        }
+
+        closeFs.addEventListener("click", closeFsPlayer);
+        fsContainer.addEventListener("click", function (e) {
+          if (e.target === fsContainer) closeFsPlayer();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && fsContainer.style.display === "flex")
+            closeFsPlayer();
+        });
+      });
+
+      // ---------- INFINITE PHOTO BELT ----------
+      function buildBelt() {
+        const track = document.getElementById("beltTrack");
+        if (track.children.length > 0) return;
+
+        const exts = ["jpg", "jpeg", "png", "webp"];
+        // create 2 sets of photos for seamless loop
+        const totalItems = PHOTO_COUNT * 2;
+
+        function tryLoadImage(idx, img, item, attempt = 0) {
+          if (attempt >= exts.length) {
+            img.style.display = "none";
+            if (!item.querySelector(".belt-placeholder")) {
+              const ph = document.createElement("div");
+              ph.className = "belt-placeholder";
+              ph.textContent = "📷";
+              item.appendChild(ph);
+            }
+            return;
+          }
+          const url = `photo${idx}.${exts[attempt]}`;
+          const test = new Image();
+          test.onload = function () {
+            img.src = url;
+            img.style.display = "block";
+            const ph = item.querySelector(".belt-placeholder");
+            if (ph) ph.remove();
+          };
+          test.onerror = function () {
+            tryLoadImage(idx, img, item, attempt + 1);
+          };
+          test.src = url;
+        }
+
+        for (let i = 0; i < totalItems; i++) {
+          const idx = (i % PHOTO_COUNT) + 1;
+          const item = document.createElement("div");
+          item.className = "belt-item";
+          const img = document.createElement("img");
+          img.alt = `Photo ${idx}`;
+          img.dataset.idx = idx;
+          img.style.display = "none";
+          item.appendChild(img);
+          track.appendChild(item);
+          tryLoadImage(idx, img, item, 0);
+        }
+      }
+
+      // ---------- VIDEO GRID ----------
+      function buildVideoGrid() {
+        const grid = document.getElementById("videoGrid");
+        if (grid.children.length > 0) return;
+        const videos = [
+          {
+            src: "video1.mp4",
+            label: "Birthday Clip — Part 1",
+            sub: "🎬 Special",
+          },
+          {
+            src: "video2.mp4",
+            label: "Birthday Clip — Part 2",
+            sub: "🎬 Special",
+          },
+        ];
+        videos.forEach((v, i) => {
+          const card = document.createElement("div");
+          card.className = "video-card";
+          card.innerHTML = `
+            <div class="video-wrap">
+              <video id="gridVideo${i + 1}" muted playsinline loop>
+                <source src="${v.src}" type="video/mp4">
+              </video>
+            </div>
+            <div class="video-label">${v.label} <span class="sub">${v.sub}</span> <span class="play-hint">▶ Play</span></div>
+          `;
+          grid.appendChild(card);
+          const vid = document.getElementById(`gridVideo${i + 1}`);
+          if (vid) {
+            vid.preload = "metadata";
+            vid.load();
+            // don't autoplay grid videos. Play on user interaction and unmute the selected one
+            card.addEventListener("click", () => {
+              // ensure fullscreen player is closed and paused
+              const fsContainer = document.getElementById("video1Fullscreen");
+              const fsVideo = document.getElementById("fsVideo1");
+              if (fsContainer && fsContainer.style.display === "flex") {
+                fsContainer.style.display = "none";
+                try {
+                  fsVideo.pause();
+                  fsVideo.currentTime = 0;
+                } catch (e) {}
+              }
+              if (vid.paused) {
+                // unmute this video and play, pause others
+                vid.muted = false;
+                vid.play().catch(() => {});
+                document.querySelectorAll(".video-grid video").forEach((v2) => {
+                  if (v2 !== vid) {
+                    v2.pause();
+                    v2.muted = true;
+                  }
+                });
+              } else {
+                vid.pause();
+              }
+            });
+            // also allow clicking the label to toggle play
+            const label = card.querySelector(".video-label");
+            if (label) label.style.cursor = "pointer";
+          }
+        });
+      }
+
+      // ---------- PHOTO UPLOAD (kept for compatibility) ----------
+      function handlePhotoUpload(event) {
+        // just a stub — belt is auto-generated
+        const file = event.target.files[0];
+        if (!file) return;
+        // we ignore uploads for belt, but keep function to avoid errors
+        document.getElementById("photoInput").value = "";
+      }
+
+      // ---------- CONFETTI & SPARKLE (enhanced) ----------
+      function createConfetti() {
+        const el = document.createElement("div");
+        el.style.position = "fixed";
+        el.style.top = "-10px";
+        el.style.left = Math.random() * 100 + "%";
+        el.style.fontSize = Math.random() * 20 + 14 + "px";
+        el.style.pointerEvents = "none";
+        el.style.zIndex = "9999";
+        el.style.animation = "fall 3.5s linear forwards";
+        el.textContent = [
+          "🎉",
+          "🎊",
+          "🎈",
+          "🎁",
+          "💕",
+          "⭐",
+          "✨",
+          "🌸",
+          "💖",
+          "🥂",
+        ][Math.floor(Math.random() * 10)];
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3500);
+      }
+      setInterval(createConfetti, 700);
+      document.addEventListener("mousemove", function (e) {
+        if (Math.random() > 0.96) {
+          const spark = document.createElement("div");
+          spark.className = "sparkle";
+          spark.textContent = "✨";
+          spark.style.left = e.pageX - 12 + "px";
+          spark.style.top = e.pageY - 12 + "px";
+          document.body.appendChild(spark);
+          setTimeout(() => spark.remove(), 1000);
+        }
+      });
+
+      // ----- on load: float effect on banner title -----
+      document.addEventListener("DOMContentLoaded", function () {
+        const h = document.querySelector(".banner-overlay h1");
+        if (h) h.classList.add("float-animation");
+      });
+    </script>
+  </body>
+</html>
